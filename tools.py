@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from groq import Groq
 import json
 
-load_dotenv()
+load_dotenv(dotenv_path="api-key.env")
 client = Groq(api_key=os.environ.get("groq_api"))
 MODEL =  'llama3-8b-8192'
 

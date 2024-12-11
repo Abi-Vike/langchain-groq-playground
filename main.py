@@ -5,7 +5,7 @@ import langchain
 from groq import AsyncGroq
 from groq import Groq as gr
 
-load_dotenv()
+load_dotenv(dotenv_path="api-key.env")
 
 async def main():
     client = AsyncGroq(api_key=os.environ.get("groq_api"))
@@ -18,12 +18,12 @@ async def main():
             },
             {
                 "role": "user",
-                "content": "What are you?",
+                "content": "Who are you?",
             }
         ],
         model="llama3-8b-8192",
         temperature=0.5,
-        stop="Good Bye",
+        stop=None,
         stream=False,
     )
     print(chat_completion.choices[0].message.content)
