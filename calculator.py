@@ -1,12 +1,12 @@
 import streamlit as st
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
 from groq import Groq
 import json
 
-# Load environment variables
-load_dotenv(dotenv_path="api-key.env")
-client = Groq(api_key=os.environ.get("groq_api"))
+# Load environment variables only to use locally
+# load_dotenv(dotenv_path="api-key.env")
+client = Groq(api_key=st.secrets("groq_api"))
 MODEL = 'llama3-8b-8192'
 
 def calculate(expression):
