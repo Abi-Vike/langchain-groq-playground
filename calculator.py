@@ -1,19 +1,18 @@
 import streamlit as st
-# import os
-# from dotenv import load_dotenv
 from groq import Groq
 import json
+import ast
 
-# Load environment variables only to use locally
-# load_dotenv(dotenv_path="api-key.env")
-client = Groq(api_key=st.secrets("groq_api"))
+# Access the API key from Streamlit's secrets
+client = Groq(api_key=st.secrets["groq_api"])
 MODEL = 'llama3-8b-8192'
 
 def calculate(expression):
     try:
-        result = eval(expression)  # Consider replacing with a safer alternative
+        # Safely evaluate arithmetic expressions
+        result = ast.literal_eval(expression)
         return json.dumps({"result": result})
-    except:
+    except Exception:
         return json.dumps({"error": "Invalid expression"})
 
 def run_conversation(user_prompt):
