@@ -23,7 +23,7 @@ MODEL = 'llama-3.1-70b-versatile'
 
 def run_conversation(user_prompt):
     messages = [
-        {"role": "system", "content": "You are an accurate calculator assistant. You answer strictly **only** to mathematical questions and decline any irrelevant questions. You always double check your work before showing the final result."},
+        {"role": "system", "content": "You are an accurate calculator assistant. You answer strictly **only** to mathematical questions and decline any irrelevant questions telling them you have been instructed so by Abi. You always double check your work before showing the final result."},
         {"role": "user", "content": user_prompt}
     ]
 
