@@ -21,72 +21,25 @@ def run_conversation(user_prompt):
         {"role": "user", "content": user_prompt}
     ]
 
-    tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "calculate",
-                "description": "Calculates the mathematical expression provided.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "expression": {
-                            "type": "string",
-                            "description": "A mathematical expression to evaluate."
-                        }
-                    },
-                    "required": ["expression"],
-                },
-            },
-        }
-    ]
-
     response = client.chat.completions.create(
         model=MODEL,
         messages=messages,
         stream=False,
-        tools=tools,
-        tool_choice="auto",
         max_tokens=4096
     )
 
-    response_message = response.choices[0].message
-    tool_calls = response_message.tool_calls
-    if tool_calls:
-        available_functions = {"calculate": calculate}
-        messages.append(response_message)
+    response_message = response.choices[0].message.content
+    return response_message
 
-        for tool_call in tool_calls:
-            function_name = tool_call.function.name
-            function_to_call = available_functions[function_name]
-            function_args = json.loads(tool_call.function.arguments)
-
-            function_response = function_to_call(
-                expression=function_args.get("expression")
-            )
-
-            messages.append({
-                "tool_call_id": tool_call.id,
-                "role": "tool",
-                "name": function_name,
-                "content": function_response,
-            })
-
-        second_response = client.chat.completions.create(
-            model=MODEL,
-            messages=messages
-        )
-
-        return second_response.choices[0].message.content
 
 # Streamlit UI
-st.title("Interactive Calculator Chatbot")
+st.title("Interactive AI Calculator Chatbot")
 
-user_prompt = st.text_input("Enter your mathematical expression:")
+user_prompt = st.text_input("You can use human language to ask your mathematical question:")
 
 if st.button("Calculate"):
     if user_prompt:
         result = run_conversation(user_prompt)
         st.write(result)
     else:
-        st.warning("Please enter an expression to calculate.")
+        st.warning("Please enter a mathematical expression to calculate.")
